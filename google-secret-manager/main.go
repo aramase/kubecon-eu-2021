@@ -8,7 +8,7 @@ import (
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/option"
 	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 )
 
 var (

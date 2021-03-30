@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	"gopkg.in/fsnotify.v1"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 )
 
 var (

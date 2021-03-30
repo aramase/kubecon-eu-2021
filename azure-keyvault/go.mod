@@ -8,5 +8,5 @@ require (
 	github.com/Azure/go-autorest/autorest/adal v0.9.13
 	github.com/Azure/go-autorest/autorest/to v0.4.0 // indirect
 	github.com/Azure/go-autorest/autorest/validation v0.3.1 // indirect
-	k8s.io/klog v1.0.0
+	k8s.io/klog/v2 v2.8.0
 )

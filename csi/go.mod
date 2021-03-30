@@ -7,4 +7,5 @@ require (
 	golang.org/x/sys v0.0.0-20210326220804-49726bf1d181 // indirect
 	gopkg.in/fsnotify.v1 v1.4.7
 	k8s.io/klog v1.0.0
+	k8s.io/klog/v2 v2.8.0
 )
