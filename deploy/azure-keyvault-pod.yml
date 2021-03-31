@@ -1,0 +1,16 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: azure-kv-pod
+spec:
+  terminationGracePeriodSeconds: 0
+  containers:
+  - name: cont
+    image: aramase/azure-keyvault:v0.1
+    imagePullPolicy: IfNotPresent
+    args:
+    - --keyvault-name=kubecon-eu-2021
+    - --keyvault-secret-name=app-secret
+    - --client-id=<client id>
+    - --client-secret=<client secret>
+    - --tenant-id=<tenant id>

@@ -1,0 +1,25 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: csi-pod
+spec:
+  terminationGracePeriodSeconds: 0
+  containers:
+  - name: cont
+    image: aramase/csi:v0.1
+    imagePullPolicy: IfNotPresent
+    args:
+    - secret-name=app-secret
+    volumeMounts:
+    - name: secrets-store-inline
+      mountPath: "/mnt/secrets-store"
+      readOnly: true
+  volumes:
+    - name: secrets-store-inline
+      csi:
+        driver: secrets-store.csi.k8s.io
+        readOnly: true
+        volumeAttributes:
+          secretProviderClass: "csi-spc"
+        nodePublishSecretRef:
+          name: secrets-store-creds
