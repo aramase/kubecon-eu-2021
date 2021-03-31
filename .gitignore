@@ -19,3 +19,6 @@
 
 # binary directory
 _output/
+
+# creds
+kind-sa.json

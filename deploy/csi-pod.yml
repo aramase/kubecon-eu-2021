@@ -7,9 +7,9 @@ spec:
   containers:
   - name: cont
     image: aramase/csi:v0.1
-    imagePullPolicy: IfNotPresent
+    imagePullPolicy: Always
     args:
-    - secret-name=app-secret
+    - --secret-name=app-secret
     volumeMounts:
     - name: secrets-store-inline
       mountPath: "/mnt/secrets-store"

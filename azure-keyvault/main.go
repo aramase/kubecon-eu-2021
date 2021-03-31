@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"regexp"
+	"time"
 
 	kv "github.com/Azure/azure-sdk-for-go/services/keyvault/2016-10-01/keyvault"
 	"github.com/Azure/go-autorest/autorest"
@@ -67,6 +68,8 @@ func main() {
 	}
 	// log the secret
 	klog.Infof(*secret.Value)
+	// sleep forever
+	time.Sleep(3600 * time.Second)
 }
 
 func token(env azure.Environment, clientID, clientSecret, tenantID string) (*adal.ServicePrincipalToken, error) {

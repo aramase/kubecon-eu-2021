@@ -8,7 +8,7 @@ IMAGE_TAG ?= $(REGISTRY)/$(IMAGE_NAME):$(VERSION)
 ## --------------------------------------
 build-binary:
 	@echo "** building binary with version:$(VERSION)"
-	@go build -o _output/azure-keyvault .
+	@GOOS=linux go build -o _output/azure-keyvault .
 
 build-image:
 	@docker build -t $(IMAGE_TAG) .

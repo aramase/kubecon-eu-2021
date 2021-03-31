@@ -11,7 +11,7 @@ import (
 
 var (
 	secretsPath = flag.String("secrets-path", "/mnt/secrets-store", "fs path that contains the secrets")
-	secretName  = flag.String("secret-name", "", "secret name")
+	secretName  = flag.String("secret-name", "app-secret", "secret name")
 
 	watcher *fsnotify.Watcher
 )

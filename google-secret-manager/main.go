@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"time"
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
@@ -39,4 +40,5 @@ func main() {
 	}
 	// log the secret
 	klog.Info(string(result.Payload.Data))
+	time.Sleep(3600 * time.Second)
 }

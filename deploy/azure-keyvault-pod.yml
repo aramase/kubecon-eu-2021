@@ -7,7 +7,7 @@ spec:
   containers:
   - name: cont
     image: aramase/azure-keyvault:v0.1
-    imagePullPolicy: IfNotPresent
+    imagePullPolicy: Always
     args:
     - --keyvault-name=kubecon-eu-2021
     - --keyvault-secret-name=app-secret
