@@ -8,21 +8,15 @@ import (
 	"time"
 
 	kv "github.com/Azure/azure-sdk-for-go/services/keyvault/2016-10-01/keyvault"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/adal"
+	"github.com/Azure/azure-sdk-for-go/services/keyvault/auth"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"k8s.io/klog/v2"
 )
 
 var (
-	keyvaultName          = flag.String("keyvault-name", "", "Azure Keyvault name")
-	keyvaultSecretName    = flag.String("keyvault-secret-name", "", "Azure Keyvault secret name")
+	keyvaultName          = flag.String("keyvault-name", "kubecon-eu-2021", "Azure Keyvault name")
+	keyvaultSecretName    = flag.String("keyvault-secret-name", "app-secret", "Azure Keyvault secret name")
 	keyvaultSecretVersion = flag.String("keyvault-secret-version", "", "Azure Keyvault secret version")
-
-	// credentials for accessing keyvault
-	clientID     = flag.String("client-id", "", "Service principal clientID to access keyvault")
-	clientSecret = flag.String("client-secret", "", "Service principal client secret to access keyvault")
-	tenantID     = flag.String("tenant-id", "", "Azure Keyvault tenant ID")
 )
 
 func main() {
@@ -36,25 +30,17 @@ func main() {
 	if len(*keyvaultSecretName) == 0 {
 		klog.Fatal("keyvault secret name not provided")
 	}
-	// clientID and clientSecret are required to access secret from keyvault
-	if len(*clientID) == 0 || len(*clientSecret) == 0 {
-		klog.Fatal("clientID and client secret are required")
-	}
-	if len(*tenantID) == 0 {
-		klog.Fatalf("tenantID is required")
-	}
 
 	// use azure public cloud environment for the purpose of demo
 	env := azure.PublicCloud
 
 	// create new keyvault client
 	kvClient := kv.New()
-	// get token to access keyvault
-	tp, err := token(env, *clientID, *clientSecret, *tenantID)
+	authorizer, err := auth.NewAuthorizerFromEnvironment()
 	if err != nil {
-		klog.Fatalf("failed to get token: %v", err)
+		klog.Fatalf("failed to create authorizer: %v",err)
 	}
-	kvClient.Authorizer = autorest.NewBearerAuthorizer(tp)
+	kvClient.Authorizer = authorizer
 
 	vaultURL, err := getVaultURL(env, *keyvaultName)
 	if err != nil {
@@ -70,18 +56,6 @@ func main() {
 	klog.Infof(*secret.Value)
 	// sleep forever
 	time.Sleep(3600 * time.Second)
-}
-
-func token(env azure.Environment, clientID, clientSecret, tenantID string) (*adal.ServicePrincipalToken, error) {
-	kvEndPoint := env.KeyVaultEndpoint
-	if '/' == kvEndPoint[len(kvEndPoint)-1] {
-		kvEndPoint = kvEndPoint[:len(kvEndPoint)-1]
-	}
-	oauthConfig, err := adal.NewOAuthConfig(env.ActiveDirectoryEndpoint, tenantID)
-	if err != nil {
-		return nil, err
-	}
-	return adal.NewServicePrincipalToken(*oauthConfig, clientID, clientSecret, kvEndPoint)
 }
 
 func getVaultURL(azureEnvironment azure.Environment, vaultName string) (vaultURL *string, err error) {

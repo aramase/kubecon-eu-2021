@@ -11,6 +11,19 @@ spec:
     args:
     - --keyvault-name=kubecon-eu-2021
     - --keyvault-secret-name=app-secret
-    - --client-id=<client id>
-    - --client-secret=<client secret>
-    - --tenant-id=<tenant id>
+    env:
+    - name: AZURE_CLIENT_ID
+      valueFrom:
+        secretKeyRef:
+          key: clientid
+          name: secrets-store-creds
+    - name: AZURE_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          key: clientsecret
+          name: secrets-store-creds
+    - name: AZURE_TENANT_ID
+      valueFrom:
+        secretKeyRef:
+          key: tenantid
+          name: secrets-store-creds

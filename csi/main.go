@@ -14,6 +14,7 @@ var (
 	secretName  = flag.String("secret-name", "app-secret", "secret name")
 
 	watcher *fsnotify.Watcher
+	secretValue string
 )
 
 func main() {
@@ -28,6 +29,7 @@ func main() {
 	if err != nil {
 		klog.Fatalf("failed to get secret file: %v", err)
 	}
+	secretValue = secret
 	// log the secret
 	klog.Infof(secret)
 
@@ -52,8 +54,11 @@ func main() {
 				if err != nil {
 					klog.Fatalf("failed to get secret file: %v", err)
 				}
-				// log the secret
-				klog.Infof(secret)
+				if secretValue != secret {
+					secretValue = secret
+					// log the secret
+					klog.Infof(secret)
+				}
 
 				// watch for errors
 			case err := <-watcher.Errors:
