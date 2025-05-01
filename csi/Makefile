@@ -1,6 +1,6 @@
 REGISTRY ?= aramase
 IMAGE_NAME ?= csi
-VERSION ?= v0.1
+VERSION ?= v0.3
 IMAGE_TAG ?= $(REGISTRY)/$(IMAGE_NAME):$(VERSION)
 
 ## --------------------------------------
@@ -8,10 +8,10 @@ IMAGE_TAG ?= $(REGISTRY)/$(IMAGE_NAME):$(VERSION)
 ## --------------------------------------
 build-binary:
 	@echo "** building binary with version:$(VERSION)"
-	@GOOS=linux go build -o _output/csi .
+	@GOOS=linux GOARCH=${ARCH} go build -o _output/${ARCH}/csi .
 
 build-image:
-	@docker build -t $(IMAGE_TAG) .
+	@docker buildx build --no-cache --platform "linux/amd64,linux/arm64" -t $(IMAGE_TAG) --push .
 
 push-image:
 	@docker push $(IMAGE_TAG)

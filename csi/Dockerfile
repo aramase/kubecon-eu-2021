@@ -1,6 +1,6 @@
-ARG BASEIMAGE="gcr.io/distroless/static:nonroot-amd64"
-FROM $BASEIMAGE
+FROM gcr.io/distroless/static:nonroot
+ARG TARGETARCH
 
-COPY ./_output/csi /bin/
+COPY ./_output/${TARGETARCH}/csi /bin/
 
 ENTRYPOINT [ "/bin/csi" ]
